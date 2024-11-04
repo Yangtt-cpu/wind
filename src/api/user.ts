@@ -32,6 +32,19 @@ export type RefreshTokenResult = {
 /** 登录 */
 export const getLogin = (data?: object) => {
   // return http.request<UserResult>("post", baseUrlApi("login"), { data });
+  return new Promise<UserResult>((resolve, reject) => {
+    fetch("http://149.129.72.26:3005/user/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    })
+      .then(resp => resp.json())
+      .then(data => {
+        resolve(data);
+      });
+  });
   return http.request<UserResult>("post", "/login", { data });
 };
 
