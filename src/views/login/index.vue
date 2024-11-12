@@ -51,6 +51,9 @@ const onLogin = async (formEl: FormInstance | undefined) => {
               router.push(getTopMenu(true).path);
               message("登录成功", { type: "success" });
             });
+          } else {
+            loading.value = false;
+            message(res.message, { type: "error" });
           }
         });
     } else {

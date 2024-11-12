@@ -1,13 +1,10 @@
 import { http } from "@/utils/http";
-import { baseUrlApi } from "./utils";
 
-type Result = {
-  success: boolean;
-  data: Array<any>;
-};
-
-export const getAsyncRoutes = () => {
-  return http.request<Result>("get", "/get-async-routes");
+export const getAsyncRoutes = async () => {
+  return {
+    success: true,
+    data: []
+  };
 };
 
 export const getqueryPredictPass2 = () => {
