@@ -30,21 +30,54 @@ export type RefreshTokenResult = {
 };
 
 /** 登录 */
-export const getLogin = (data?: object) => {
+export const getLogin = async (data?: object) => {
+  const { username, password } = data;
+  if (!username || !password) {
+    return {
+      success: false,
+      message: "缺少用户名或密码",
+      data: {
+        message: "缺少用户名或密码"
+      }
+    };
+  }
+  if (username !== "admin" || password !== "admin123") {
+    return {
+      success: false,
+      message: "用户名或密码错误",
+      data: {
+        message: "用户名或密码错误"
+      }
+    };
+  }
+  const expires = new Date();
+  expires.setDate(expires.getDate() + 7);
+  return {
+    success: true,
+    data: {
+      username: "admin",
+      roles: ["admin"],
+      // 这里应该是一个 token，这里简化了
+      accessToken: "xxxxxxxx",
+      refreshToken: "yyyyyyyy",
+      /** `accessToken`的过期时间（格式'xxxx/xx/xx xx:xx:xx'） */
+      expires: expires.toLocaleString()
+    }
+  };
   // return http.request<UserResult>("post", baseUrlApi("login"), { data });
-  return new Promise<UserResult>((resolve, reject) => {
-    fetch("http://149.129.72.26:3005/user/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(data)
-    })
-      .then(resp => resp.json())
-      .then(data => {
-        resolve(data);
-      });
-  });
+  // return new Promise<UserResult>((resolve, reject) => {
+  //   fetch("http://149.129.72.26:3005/user/login", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json"
+  //     },
+  //     body: JSON.stringify(data)
+  //   })
+  //     .then(resp => resp.json())
+  //     .then(data => {
+  //       resolve(data);
+  //     });
+  // });
   return http.request<UserResult>("post", "/login", { data });
 };
 
