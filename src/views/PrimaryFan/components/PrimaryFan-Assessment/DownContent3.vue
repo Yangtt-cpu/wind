@@ -7,7 +7,7 @@
   ></div>
 </template>
 
-<script>
+<!-- <script>
 import * as echarts from "echarts";
 
 export default {
@@ -99,6 +99,81 @@ export default {
 
       let myChart = echarts.init(this.$refs.echartsContainer);
       myChart.setOption(option);
+    }
+  }
+};
+</script> -->
+<script>
+import * as echarts from "echarts";
+
+export default {
+  name: "SpectrumChart",
+  data() {
+    return {
+      chart: null, // 用于存储ECharts实例
+      measurements: [], // 横坐标数据
+      values: [], // 纵坐标数据
+    };
+  },
+  mounted() {
+    this.initChart();
+    this.fetchData(); // 获取数据
+  },
+  beforeUnmount() {
+    if (this.chart) {
+      this.chart.dispose(); // 销毁图表实例
+    }
+  },
+  methods: {
+    initChart() {
+      this.chart = echarts.init(this.$refs.echartsContainer);
+    },
+    fetchData() {
+      fetch('http://localhost:8080/api/device/queryblpamp') // 替换为您的实际API端点
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then(apiResponse => {//检查apiResponse是否为数组
+          if (Array.isArray(apiResponse.data)) {
+           this.measurements = apiResponse.data.map(item => item.measurement);// 假设返回的数据中包含measurement字段
+           this.values = apiResponse.data.map(item => parseFloat(item.value)); // 假设返回的数据中包含value字段
+           this.updateChart(); // 更新图表
+        } else {
+          console.error('API返回的数据中不包含data数组');
+        }
+         })
+        .catch(error => {
+          console.error('Error fetching data:', error);
+        });
+    },
+    updateChart() {
+      if (this.chart) {
+        this.chart.setOption({
+          xAxis: {
+            data: this.measurements,
+          },
+          series: [
+            {
+              name: "Signal Strength",
+              type: "line",
+              smooth: true,
+              data: this.values,
+              linestyle: {
+                width: 1,
+                color: "rgb(255,233,36)"
+              },
+              areaStyle: {
+                color: new echarts.graphic.LinearGradient(0, 0, 0, 1[
+                  { offset: 0, color: "rgb(255,233,36)" },
+                  { offset: 1, color: "rgb(255,127,0)" }
+                ])
+              }
+            }]
+        });
+      }
     }
   }
 };
