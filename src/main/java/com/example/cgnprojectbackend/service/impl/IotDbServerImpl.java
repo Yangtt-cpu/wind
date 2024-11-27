@@ -4,6 +4,7 @@ import com.example.cgnprojectbackend.config.IotDBSessionConfig;
 import com.example.cgnprojectbackend.entity.EconomicData;
 import com.example.cgnprojectbackend.entity.PredictData;
 import com.example.cgnprojectbackend.entity.SymptomData;
+import com.example.cgnprojectbackend.entity.Alert;
 import com.example.cgnprojectbackend.service.IotDbServer;
 import lombok.extern.log4j.Log4j2;
 import org.apache.iotdb.rpc.IoTDBConnectionException;
@@ -32,6 +33,29 @@ public class IotDbServerImpl implements IotDbServer {
 //    @Value("${spring.iotdb.predict_device2:root.ciia.fcg.unit2.preresult}")
     @Value("${spring.iotdb.predict_device2:root.vibdata.card28.channel1}")
     private String predict_device2;
+
+    public List<Alert> queryAlert(List<String>yujingzhis)
+        throws IoTDBConnectionException,StatementExecutionException {
+        List<Alert> result = new ArrayList<>();
+         if (yujingzhis !=null){
+             for (String yujingzhi:yujingzhis)
+             {
+                 String sql = "select last " + yujingzhi + " form " + predict_device2;
+                 SessionDataSet sessionDataSet = iotDBSessionConfig.query(sql);
+                 int fetSize = sessionDataSet.getFetchSize();
+                 if (fetSize>0){
+                     while ( (sessionDataSet.hasNext())){
+                         Alert alert = new Alert();
+                         RowRecord next = sessionDataSet.next();
+                         List<Field> fields = next .getFields();
+                         alert.setYujingzhi(yujingzhi);
+                         result.add(alert);
+                     }
+                 }
+             }
+         }
+         return result;
+    }
 
     public  List<PredictData> queryPredictData(List<String> measurements)
         throws IoTDBConnectionException, StatementExecutionException {
@@ -133,7 +157,7 @@ public class IotDbServerImpl implements IotDbServer {
             ) {
                 //查询当前时间的前1个小时的数据
                 String queryTime = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(System.currentTimeMillis()-1000*60*60);
-                String sql = "select " + measurement +" from "+ predict_device2+" where time > "+ queryTime;
+                String sql = "select " + measurement +" from "+ predict_device2+ " order by time desc limit 1 ";
                 SessionDataSet sessionDataSet = iotDBSessionConfig
                         .query(sql);
                 int fetchSize = sessionDataSet.getFetchSize();

@@ -26,7 +26,7 @@ public class IotDBSessionConfig {
 
 
 //    private static final String LOCAL_HOST = "192.168.1.104";
-    private static final String LOCAL_HOST = "192.168.0.111";
+    private static final String LOCAL_HOST = "10.18.18.200";
 
 //    private static final String LOCAL_HOST = "10.78.34.61";
 //    @Value("${Spring.iotdb.port}")

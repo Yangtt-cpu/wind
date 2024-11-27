@@ -3,16 +3,17 @@ package com.example.cgnprojectbackend.service;
 import com.example.cgnprojectbackend.entity.EconomicData;
 import com.example.cgnprojectbackend.entity.PredictData;
 import com.example.cgnprojectbackend.entity.SymptomData;
+import com.example.cgnprojectbackend.entity.Alert;
 import org.apache.iotdb.rpc.IoTDBConnectionException;
 import org.apache.iotdb.rpc.StatementExecutionException;
-import org.springframework.context.annotation.Configuration;
-
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 
 public interface IotDbServer{
+
+    public List<Alert> queryAlert(List<String> yujingzhis) throws IoTDBConnectionException, StatementExecutionException;
+
     public List<PredictData> queryPredictData(List<String> measurements) throws IoTDBConnectionException, StatementExecutionException;
     public List<PredictData> queryPredictData2(List<String> measurements) throws IoTDBConnectionException, StatementExecutionException;
 

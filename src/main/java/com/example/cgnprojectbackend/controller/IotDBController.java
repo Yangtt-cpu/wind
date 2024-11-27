@@ -1,10 +1,7 @@
 package com.example.cgnprojectbackend.controller;
 
 
-import com.example.cgnprojectbackend.entity.EconomicData;
-import com.example.cgnprojectbackend.entity.PredictData;
-import com.example.cgnprojectbackend.entity.RestBean;
-import com.example.cgnprojectbackend.entity.SymptomData;
+import com.example.cgnprojectbackend.entity.*;
 import com.example.cgnprojectbackend.service.IotDbServer;
 import lombok.extern.log4j.Log4j2;
 import org.apache.iotdb.rpc.IoTDBConnectionException;
@@ -13,6 +10,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 @Log4j2
@@ -22,9 +20,28 @@ import java.util.List;
 
 
 public class IotDBController {
+
+    private final static List<String> ALL_MEASUREMENTS = new ArrayList<>();
+
+    static {
+        for (int i = 0; i <= 255; i++) {
+            ALL_MEASUREMENTS.add("blpamp" + i);
+        }
+    }
+
     @Resource
     private IotDbServer iotDbServer;
 
+
+    @PostMapping("/queryblpamp")
+    public RestBean<List<PredictData>> queryPredictDataByTimeLine2() throws IoTDBConnectionException, StatementExecutionException {
+        return RestBean.success(iotDbServer.queryPredictDataByTimeLine2(ALL_MEASUREMENTS));
+    }
+
+    @PostMapping("/queryAlert")
+    public RestBean<List<Alert>> queryAlert(@RequestParam("yujingzhis") List<String> yujingzhis) throws IoTDBConnectionException,StatementExecutionException {
+        return RestBean.success(iotDbServer. queryAlert(yujingzhis));
+    }
 
     @PostMapping("/queryPredictPass")
     public RestBean<List<PredictData>> queryPredictData(@RequestParam("measurements")  List<String> measurements) throws IoTDBConnectionException, StatementExecutionException {
