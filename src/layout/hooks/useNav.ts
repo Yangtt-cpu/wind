@@ -1,7 +1,7 @@
 import { storeToRefs } from "pinia";
 import { getConfig } from "@/config";
 import { emitter } from "@/utils/mitt";
-import userAvatar from "@/assets/user2.jpg";
+import userAvatar from "@/assets/user3.jpg";
 import { getTopMenu } from "@/router/utils";
 import { useFullscreen } from "@vueuse/core";
 import { useGlobal } from "@pureadmin/utils";
