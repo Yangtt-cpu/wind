@@ -126,22 +126,23 @@
           ><span style="font-weight: bold">{{ queryPredictPass2 }}mm/s</span>
         </div>
       </div>
-      <svg style="position: absolute; top: 50px; left: 800px;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+      <svg style="position: absolute; top: 75px; left: 800px;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
          <!-- SVG paths here -->
-          <svg t="1732688012011" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3722" width="500" height="500"><path d="M1024.769684 559.111055a464.696524 464.696524 0 0 1-464.760664 464.888945H465.466207A464.696524 464.696524 0 0 1 0.577263 559.111055V464.953085A464.888945 464.888945 0 0 1 465.466207 0h94.542813a464.824804 464.824804 0 0 1 464.760664 464.888945v94.22211z" fill="#FE6668" p-id="3723"></path><path d="M512.673473 825.229189a62.60094 62.60094 0 0 1-45.860319-18.79311 60.997432 60.997432 0 0 1-18.85725-44.449233h127.895772a60.805011 60.805011 0 0 1-18.087567 45.090636 61.253993 61.253993 0 0 1-45.090636 18.151707z m192.805763-352.322706v159.645224l64.84585 64.78171v31.557031H255.278422v-31.557031L320.124272 632.423426V472.906483c0-50.22186 12.699781-93.901409 38.355903-131.038647 25.591982-37.137238 60.933292-61.253993 106.088068-72.221986v-22.641528a47.463827 47.463827 0 0 1 13.597745-33.866082 45.154776 45.154776 0 0 1 34.571626-14.303289c14.175008 0 25.591982 4.810523 34.699906 14.303289a47.014845 47.014845 0 0 1 13.533604 33.866082v22.641528c45.090636 11.032133 80.624366 35.148888 106.152208 72.221986 25.527842 37.137238 38.420044 80.816787 38.355904 131.038647z m63.242342-16.61234c-4.938804-86.332853-42.717444-155.027122-113.01522-206.275227l45.154776-45.090635c83.382399 64.140307 127.51093 148.035828 132.449734 251.365862h-64.58929zM371.179956 249.954776c-71.195741 50.22186-109.359223 119.04441-114.362167 206.339367H191.971939c5.002944-103.394175 49.195615-187.225556 132.578014-251.430003l46.630003 45.090636z" fill="#FFFFFF" p-id="3724"></path></svg>
+          <svg t="1732776281414" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2462" width="200" height="200"><path d="M85.333333 810.666667c0-23.466667 19.2-42.666667 42.666667-42.666667h42.666667v-192c0-187.733333 153.6-341.333333 341.333333-341.333333s341.333333 153.6 341.333333 341.333333v192h42.666667c23.466667 0 42.666667 19.2 42.666667 42.666667v149.333333c0 23.466667-19.2 42.666667-42.666667 42.666667H128c-23.466667 0-42.666667-19.2-42.666667-42.666667v-149.333333z m85.333334 42.666666v64h682.666666v-64H170.666667z m85.333333-277.333333v192h512v-192c0-140.8-115.2-256-256-256s-256 115.2-256 256zM469.333333 64v85.333333c0 23.466667 19.2 42.666667 42.666667 42.666667s42.666667-19.2 42.666667-42.666667V64c0-23.466667-19.2-42.666667-42.666667-42.666667s-42.666667 19.2-42.666667 42.666667M119.466667 183.466667c-17.066667 17.066667-17.066667 42.666667 0 59.733333l59.733333 59.733333c8.533333 8.533333 19.2 12.8 29.866667 12.8 10.666667 0 21.333333-4.266667 29.866666-12.8 17.066667-17.066667 17.066667-42.666667 0-59.733333L181.333333 183.466667c-17.066667-17.066667-44.8-17.066667-61.866666 0M844.8 183.466667l-59.733333 59.733333c-17.066667 17.066667-17.066667 42.666667 0 59.733333 8.533333 8.533333 19.2 12.8 29.866666 12.8 10.666667 0 21.333333-4.266667 29.866667-12.8l59.733333-59.733333c17.066667-17.066667 17.066667-42.666667 0-59.733333-17.066667-17.066667-44.8-17.066667-59.733333 0" fill="#d81e06" p-id="2463"></path><path d="M648.533333 439.466667c-19.2-19.2-44.8-34.133333-70.4-44.8-21.333333-8.533333-46.933333 4.266667-55.466666 25.6s4.266667 46.933333 25.6 55.466666c14.933333 4.266667 27.733333 12.8 38.4 25.6 10.666667 10.666667 19.2 23.466667 25.6 38.4 6.4 17.066667 23.466667 27.733333 40.533333 27.733334 4.266667 0 10.666667 0 14.933333-2.133334 21.333333-8.533333 34.133333-32 25.6-55.466666-10.666667-25.6-25.6-49.066667-44.8-70.4" fill="#d81e06" p-id="2464"></path></svg>
 
         </svg>
+        
         <div
         style="
           position: absolute;
           top: 75px;
-          left: 520px;
+          left: 620px;
           color: rgb(255, 255, 255);
           font-family: &quot;华文中宋&quot;, sans-serif;
           font-size: 25px;
         "
       >
-        <div style="margin-bottom: 10px"><span>风机状态实时预警：</span></div>
+        <div style="margin-bottom: 10px"><span>风机状态：</span></div>
         </div>
         <div
         style="
@@ -153,7 +154,7 @@
           font-size: 25px;
         "
       >
-        <div style="margin-bottom: 10px"><span>正常</span></div>
+        <div style="margin-bottom: 10px"><span>{{ queryAlert }}</span></div>
         </div>
       </div>
     </div>
@@ -163,15 +164,38 @@
 import { getqueryPredictPass2 } from "@/api/routes";
 import { ref } from "vue";
 import { array } from "vue-types";
+// const queryPredictPass2 = ref("");
+// const fetchqueryPredictPass2 = async () => {
+//   const res = await getqueryPredictPass2();
+//   // device.value = res.data;
+//   //queryPredictPass2.value = res.data.map(item=>item.value)
+//   // 使用 reduce 方法累加到最后一个元素
+//   queryPredictPass2.value = res.data.reduce((acc, item) => item.value, "");
+//   console.log(res, "res");
+// };
+// fetchqueryPredictPass2();
 const queryPredictPass2 = ref("");
 const fetchqueryPredictPass2 = async () => {
   const res = await getqueryPredictPass2();
-  // device.value = res.data;
-  //queryPredictPass2.value = res.data.map(item=>item.value)
-  // 使用 reduce 方法累加到最后一个元素 
-  queryPredictPass2.value = res.data.reduce((acc, item) => item.value, "");
+  // 检查数组是否非空
+  if (res.data.length > 0) {
+    // 直接获取数组中的最后一个元素，并保留两位小数
+    const lastItem = res.data[res.data.length - 1];
+    queryPredictPass2.value = parseFloat(lastItem.value).toFixed(2);
+  } else {
+    queryPredictPass2.value = "0.00"; // 如果数组为空，可以设置为 "0.00" 或其他默认值
+  }
+  console.log(res, "res"); 
+};
+fetchqueryPredictPass2(); 
+
+
+import { getqueryAlert } from "@/api/routes";
+const queryAlert = ref("");
+const fetchqueryAlert = async () => {
+  const res = await getqueryAlert();
+  queryAlert.value = res.data.reduce((acc, item) => item.value, "");
   console.log(res, "res");
 };
-
-fetchqueryPredictPass2();
+fetchqueryAlert();
 </script>

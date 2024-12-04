@@ -67,11 +67,8 @@
         </div>
         <div class="flex justify-center items-center  w-full h-full">
           <div class="whitespace-normal mx-8 my-2 border-dashed border-2 border-sky-500 p-4 rounded-lg">
-            <p style="font-family: '华文中宋',sans-serif; font-size: 18px;">1、叶轮上的平衡块质量与设置位置不对<br>
-              2、转子叶轮出现不同程度的磨损或腐蚀;<br>
-              3、轮盘表面存在不均匀的积灰和附着物;<br>
-              4、风机翼型空心叶片局部磨穿进入飞灰；
-              风轮在修补焊接后未做动平衡试验；叶轮各零部件存在松动或连接部件不紧固等现象。</p>
+            <p style="font-family: '华文中宋',sans-serif; font-size: 18px;">1、在使用过程中轴受到过大的瞬时冲击载荷的作用,产生弯曲或永久变形<br>
+              2、长期在较大的偏载工况下工作,由于疲劳作用使滚动轴承内、外圈和滚动体出现点蚀和疲劳剥落，导致轴系失去平衡;<br></p>
           </div>
         </div>
 
@@ -97,8 +94,7 @@
         </div>
         <div class="flex justify-center items-center  w-full h-full">
           <div class="whitespace-normal mx-8  border-dashed border-2 border-green-600 p-4 rounded-lg w-full">
-            <p style="font-family: '华文中宋',sans-serif; font-size: 18px;">设备维护班组每日对风机主要部位的振动情况进行监测并记录实时数据。及时铲除把叶片上的积灰或凝露；修补叶片，清除杂质，严重时必须更换叶片或叶轮；
-            若叶轮上的平衡块质量与设置位置不对造成振动，则需要进行静平衡的调整，在不平衡的对称位置上安放一个重量相等的校正重量，使转子的重心回复到旋转轴线上。</p>
+            <p style="font-family: '华文中宋',sans-serif; font-size: 18px;">密切关注振动监测系统和主轴不平衡报警信息，使用专业的动态平衡调整设备和技术，对主轴进行平衡调整。</p>
           </div>
         </div>
 
@@ -118,7 +114,7 @@
 <script>
   export default {
     mounted() {
-      const text = "风机不平衡";
+      const text = "轴不平衡";
       let index = 0;
       const speed = 90; // 逐字显示速度，单位为毫秒
       let typedText = '';

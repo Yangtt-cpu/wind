@@ -12,108 +12,106 @@ import * as echarts from "echarts";
 
 export default {
   name: "SpectrumChart",
+  data() {
+    return {
+      measurements: [],
+      values: [],
+      chart: null,
+    };
+  },
   mounted() {
     this.initChart();
+    this.fetchData();
   },
   methods: {
     initChart() {
-      // 先初始化 frequencies 和 data
-      let frequencies = []; // 频率
-      let data = []; // 幅度
-      let totalPoints = 200; // 数据点总数
-      let maxFrequency = 1000; // 最高频率
-      let peakFrequencies = [300, 301, 302]; // 特定的峰值频率
-
-      for (let i = 0; i < totalPoints; i++) {
-        let frequency = (maxFrequency / totalPoints) * i;
-        frequencies.push(frequency.toFixed(2) + "Hz");
-
-        if (peakFrequencies.includes(Math.round(frequency))) {
-          data.push(250 + Math.random() * 50); // 特定频率处的幅度较高
-        } else {
-          data.push(Math.random() * 10); // 其余频率处模拟噪声
-        }
-      }
-
-      // 使用 frequencies 和 data 配置 ECharts
-      let option = {
-        tooltip: {
-          trigger: "axis",
-          position: function (pt) {
-            return [pt[0], "10%"];
+      this.chart = echarts.init(this.$refs.echartsContainer);
+      this.updateChart();
+    },
+    fetchData() {
+      fetch('http://localhost:8081/api/device/queryfftamp')
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('回应不ok~');
           }
-        },
-        title: {
-          left: "",
-          text: "频谱图：一倍、二倍频",
-          padding: [10, 10, 10, 10],
-          textStyle: {
-            fontSize: 15 // 调整字体大小
-            // fontWeight: 'bold' // 加粗字体
+          return response.json();
+        })
+        .then(apiResponse => {
+          if (apiResponse.state && apiResponse.data) {
+            this.measurements = apiResponse.data.map(item => item.measurement);
+            this.values = apiResponse.data.map(item => parseFloat(item.value));
+            this.updateChart(); // 更新图表
+          } else {
+            console.error('API返回的数据中不包含data数组或状态不成功!!!');
           }
-        },
-        toolbox: {
-          feature: {
-            dataZoom: {
-              yAxisIndex: "none"
-            },
-            restore: {},
-            saveAsImage: {}
-          }
-        },
-        grid: {
-          left: "5%",
-          right: "5%",
-          bottom: "5%",
-          top: "25%",
-          containLabel: true
-        },
-        xAxis: {
-          type: "category",
-          boundaryGap: false,
-          data: frequencies
-        },
-        yAxis: {
-          type: "value"
-          // boundaryGap: [0, '100%']
-        },
-        series: [
-          {
-            name: "Signal Strength",
-            type: "line",
-            smooth: true,
-            data: data,
-            lineStyle: {
-              width: 1,
-              color: "rgb(135, 206, 235)"
-            },
-            areaStyle: {
-              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                { offset: 0, color: "rgb(135, 206, 235)" },
-                { offset: 1, color: "rgb(0, 68, 204)" }
-              ])
+        })
+        .catch(error => {
+          console.error('错啦：', error);
+        });
+    },
+    updateChart() {
+      if (this.chart) {
+        this.chart.setOption({
+          tooltip: {
+            trigger: "axis",
+            position: function (pt) {
+              return [pt[0], "10%"];
             }
           },
-          {
-            name: "严重健康问题",
-            type: "line",
-            // smooth: true,
-
-            data: [
-              [105, 2],
-              [105, 284],
-              [106, 0]
-            ],
-            lineStyle: {
-              color: "red", // 红色线条表示警告/危险
-              width: 1
+          title: {
+            left: "",
+            text: "频谱图：频谱分析",
+            padding: [10, 10, 10, 10],
+            textStyle: {
+              fontSize: 15 // 调整字体大小
+              // fontWeight: 'bold' // 加粗字体
             }
-          }
-        ]
-      };
-
-      let myChart = echarts.init(this.$refs.echartsContainer);
-      myChart.setOption(option);
+          },
+          toolbox: {
+            feature: {
+              dataZoom: {
+                yAxisIndex: "none"
+              },
+              restore: {},
+              saveAsImage: {}
+            }
+          },
+          grid: {
+            left: "5%",
+            right: "5%",
+            bottom: "5%",
+            top: "25%",
+            containLabel: true
+          },
+          xAxis: {
+            type: "category",
+            boundaryGap: false,
+            data: this.measurements
+          },
+          yAxis: {
+            type: "value"
+            // boundaryGap: [0, '100%']
+          },
+          series: [
+            {
+              name: "Signal Strength",
+              type: "line",
+              smooth: true,
+              data: this.values,
+              lineStyle: {
+                width: 1,
+                color: "rgb(135, 206, 235)"
+              },
+              areaStyle: {
+                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                  { offset: 0, color: "rgb(135, 206, 235)" },
+                  { offset: 1, color: "rgb(0, 68, 204)" }
+                ])
+              }
+            }
+          ]
+        });
+      }
     }
   }
 };
