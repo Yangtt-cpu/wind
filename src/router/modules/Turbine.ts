@@ -4,7 +4,7 @@ export default {
   meta: {
     icon: "mdi:pump",
     // showLink: false,
-    title: "汽轮机",
+    title: "汽轮机运行状态",
     rank: 5
   },
   children: [
@@ -13,7 +13,7 @@ export default {
       name: "Turbine-1",
       component: () => import("@/views/PrimaryFan/PrimaryFan-Assessment.vue"),
       meta: {
-        title: "设备运行状态评估"
+        title: "状态评估"
       }
     },
     {
