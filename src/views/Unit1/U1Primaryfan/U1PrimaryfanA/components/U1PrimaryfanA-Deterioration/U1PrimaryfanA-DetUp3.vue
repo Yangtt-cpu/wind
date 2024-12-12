@@ -9,16 +9,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+  import { defineComponent, ref } from 'vue';
 
-export default defineComponent({
-  setup() {
-    const tableData = ref([
-      // {
-      //   date: '风机轴承1#',
-      //   name: '95',
-      //   address: '30%',
-      // },
+  export default defineComponent({
+    setup() {
+      const tableData = ref([
+        // {
+        //   date: '风机轴承1#',
+        //   name: '95',
+        //   address: '30%',
+        // },
         // {
         //   date: '风机轴承2#',
         //   name: '92',

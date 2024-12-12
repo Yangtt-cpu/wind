@@ -5,7 +5,7 @@
   >
     部件健康度权重占比
   </div>
-  <div ref="echartsContainer" class="echarts-container w-full h-[205px]" />
+  <div ref="echartsContainer" class="echarts-container w-full h-[205px]"></div>
 </template>
 
 <script>
