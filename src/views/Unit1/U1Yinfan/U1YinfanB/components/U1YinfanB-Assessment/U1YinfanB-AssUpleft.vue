@@ -161,7 +161,7 @@
 </template>
 
 <script setup lang="ts">
-import { getqueryPredictPass2 } from "@/api/routes";
+import { getqueryPredict1YBQXRMS } from "@/api/routes";
 import { ref } from "vue";
 import { array } from "vue-types";
 // const queryPredictPass2 = ref("");

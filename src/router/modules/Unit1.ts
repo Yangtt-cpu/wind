@@ -243,7 +243,9 @@ export default {
             {
               path: "/Unit1/U1Yinfan/U1YinfanB/U1YinfanB-Assessment",
               component: () =>
-                import("@/views/PrimaryFan/PrimaryFan-Assessment.vue"),
+                import(
+                  "@/views/Unit1/U1Yinfan/U1YinfanB/U1YinfanB-Assessment.vue"
+                ),
               name: "U1YinfanB-Assessment",
               meta: {
                 title: "状态评估"

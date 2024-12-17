@@ -5,10 +5,10 @@ import { defineComponent } from "vue";
 import U1YinfanBAssDown1 from "./components/U1YinfanB-Assessment/U1YinfanB-AssDown1.vue";
 import U1YinfanBAssUpleft from "./components/U1YinfanB-Assessment/U1YinfanB-AssUpleft.vue";
 import U1YinfanBAssDown2 from "./components/U1YinfanB-Assessment/U1YinfanB-AssDown2.vue";
-import U1YinfanBAssDown3 from "./components/U1YinfanBessment/U1YinfanBDown3.vue";
+import U1YinfanBAssDown3 from "./components/U1YinfanB-Assessment/U1YinfanB-AssDown3.vue";
 import U1YinfanBAssUpright1 from "./components/U1YinfanB-Assessment/U1YinfanB-AssUpright1.vue";
 import U1YinfanBAssUpright2 from "./components/U1YinfanB-Assessment/U1YinfanB-AssUpright2.vue";
-import U1YinfanBAssUpright3 from "./components/U1YinfanBessment/U1YinfanB-AssUpright3.vue";
+import U1YinfanBAssUpright3 from "./components/U1YinfanB-Assessment/U1YinfanB-AssUpright3.vue";
 
 //各组件的定义
 defineComponent({
@@ -47,7 +47,7 @@ const router = useRouter();
   >
     <div name="U1YinfanB-AssUpleft" class="flex w-full h-3/4 rounded-lg p-1">
       <!-- Up 内容 -->
-      <U1YinfanBupleft />
+      <U1YinfanBAssUpleft />
       <div
         name="U1YinfanB-AssUpleft-right"
         class="flex basis-1/4 flex-col justify-center items-center h-full rounded-lg"
