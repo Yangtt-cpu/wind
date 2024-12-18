@@ -1,45 +1,6 @@
-// export default {
-//   path: "/YinFan",
-//   redirect: "/YinFan/YinFan-Assessment",
-//   meta: {
-//     icon: "mdi:fan-speed-1",
-//     // showLink: false,
-//     title: "风机A",
-//     rank: 4
-//   },
-//   children: [
-//     {
-//       path: "/YinFan/YinFan-Assessment",
-//       name: "YinFan-Assessment",
-//       component: () => import("@/views/PrimaryFan/PrimaryFan-Assessment.vue"),
-//       meta: {
-//         title: "设备运行状态评估"
-//       }
-//     },
-//     {
-//       path: "/YinFan/YinFan-FaultDiagnosis",
-//       name: "YinFan-FaultDiagnosis",
-//       component: () =>
-//         import("@/views/PrimaryFan/PrimaryFan-FaultDiagnosis.vue"),
-//       meta: {
-//         title: "故障诊断"
-//       }
-//     },
-//     {
-//       path: "/YinFan/YinFan-DeteriorationTrend",
-//       name: "YinFan-DeteriorationTrend",
-//       component: () =>
-//         import("@/views/PrimaryFan/PrimaryFan-DeteriorationTrend.vue"),
-//       meta: {
-//         title: "劣化趋势"
-//       }
-//     }
-//   ]
-// } satisfies RouteConfigsTable;
-
 export default {
   path: "/Unit4",
-  redirect: "/Unit4/PrimaryFan-Assessment",
+  redirect: "/Unit4",
   meta: {
     icon: "mdi:fan-speed-1",
     title: "四号机组运行状态",
@@ -47,44 +8,48 @@ export default {
   },
   children: [
     {
-      path: "/Unit4/menu1",
+      path: "/Unit4/U4Primaryfan",
       meta: {
         title: "一次风机运行状态"
         // rank: 1
       },
-      name: "Menu1",
+      name: "U4Primaryfan",
       children: [
         {
-          path: "/Unit4/menu1/menu1-1",
+          path: "/Unit4/U4Primaryfan/U4PrimaryfanA",
           meta: {
             title: "A侧运行状态"
             // rank: 1
           },
-          name: "Menu1-1",
+          name: "U4PrimaryfanA",
           children: [
             {
-              path: "/Unit4/menu1/menu1-1/menu1-1-1",
+              path: "/Unit4/U4Primaryfan/U4PrimaryfanA/U4Primaryfan-Assessment",
               component: () =>
-                import("@/views/PrimaryFan/PrimaryFan-Assessment.vue"),
-              name: "Menu1-1-1",
+                import("@/views/Unit4/U4Primaryfan/U4PrimaryfanA/U4PrimaryfanA-Assessment.vue"),
+              name: "U4Primaryfan-Assessment",
               meta: {
                 title: "状态评估"
               }
             },
             {
-              path: "/Unit4/menu1/menu1-1/menu1-1-2",
+              path: "/Unit4/U4Primaryfan/U4PrimaryfanA/U4PrimaryfanA-FaultDiagnosis",
               component: () =>
-                import("@/views/PrimaryFan/PrimaryFan-FaultDiagnosis.vue"),
-              name: "Menu1-1-2",
+                import(
+                  "@/views/Unit4/U4Primaryfan/U4PrimaryfanA/U4PrimaryfanA-Faultdiagnosis.vue"
+                ),
+              name: "U4PrimaryfanA-FaultDiagnosis",
               meta: {
                 title: "故障诊断"
               }
             },
             {
-              path: "/Unit4/menu1/menu1-1/menu1-1-3",
+              path: "/Unit4/U4Primaryfan/U4PrimaryfanA/U4PrimaryfanA-Deterioration",
               component: () =>
-                import("@/views/PrimaryFan/PrimaryFan-DeteriorationTrend.vue"),
-              name: "Menu1-1-3",
+                import(
+                  "@/views/Unit4/U4Primaryfan/U4PrimaryfanA/U4PrimaryfanA-Deterioration.vue"
+                ),
+              name: "U4PrimaryfanA-Deterioration",
               meta: {
                 title: "劣化趋势"
               }
@@ -93,36 +58,42 @@ export default {
         },
 
         {
-          path: "/Unit4/menu1/menu1-1",
+          path: "/Unit4/U4Primaryfan/U4PrimaryfanB",
           meta: {
             title: "B侧运行状态"
             // rank: 2
           },
-          name: "Menu1-1",
+          name: "U4PrimaryfanB",
           children: [
             {
-              path: "/Unit4/menu1/menu1-1/menu1-2-1",
+              path: "/Unit4/U4Primaryfan/U4PrimaryfanB/U4PrimaryfanB-Assessment",
               component: () =>
-                import("@/views/PrimaryFan/PrimaryFan-Assessment.vue"),
-              name: "Menu1-2-1",
+                import(
+                  "@/views/Unit4/U4Primaryfan/U4PrimaryfanB/U4PrimaryfanB-Assessment.vue"
+                ),
+              name: "U4PrimaryfanB-Assessment",
               meta: {
                 title: "状态评估"
               }
             },
             {
-              path: "/Unit4/menu1/menu1-1/menu1-2-2",
+              path: "/Unit4/U4Primaryfan/U4PrimaryfanB/U4PrimaryfanB-Faultdiagnosis",
               component: () =>
-                import("@/views/PrimaryFan/PrimaryFan-FaultDiagnosis.vue"),
-              name: "Menu1-2-2",
+                import(
+                  "@/views/Unit4/U4Primaryfan/U4PrimaryfanB/U4PrimaryfanB-Faultdiagnosis.vue"
+                ),
+              name: "U4PrimaryfanB-Faultdiagnosis",
               meta: {
                 title: "故障诊断"
               }
             },
             {
-              path: "/Unit4/menu1/menu1-1/menu1-2-3",
+              path: "/Unit4/U4Primaryfan/U4PrimaryfanB/U4PrimaryfanB-Deterioration",
               component: () =>
-                import("@/views/PrimaryFan/PrimaryFan-DeteriorationTrend.vue"),
-              name: "Menu1-2-3",
+                import(
+                  "@/views/Unit4/U4Primaryfan/U4PrimaryfanB/U4PrimaryfanB-Deterioration.vue"
+                ),
+              name: "U4PrimaryfanB-Deterioration",
               meta: {
                 title: "劣化趋势"
               }

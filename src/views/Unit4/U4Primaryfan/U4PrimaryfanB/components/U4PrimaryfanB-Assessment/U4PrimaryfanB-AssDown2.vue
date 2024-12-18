@@ -13,22 +13,22 @@ export default {
   name: "SpectrumChart",
   data() {
     return {
-      measurements: [], // 横坐标数据
-      values: [], // 纵坐标数据
-      chart: null // 用于存储ECharts实例
+      measurements: [],
+      values: [],
+      chart: null
     };
   },
   mounted() {
     this.initChart();
-    this.fetchData(); // 获取数据
+    this.fetchData();
   },
   methods: {
     initChart() {
       this.chart = echarts.init(this.$refs.echartsContainer);
-      this.updateChart(); // 初始化图表
+      this.updateChart();
     },
     fetchData() {
-      fetch("http://localhost:8081/api/device/queryU1YFBxblpamp")
+      fetch("http://localhost:8081/api/device/queryU1YFBxfftamp")
         .then(response => {
           if (!response.ok) {
             throw new Error("回应不ok~");
@@ -59,10 +59,11 @@ export default {
           },
           title: {
             left: "",
-            text: "包络谱  mm/s",
+            text: "频谱分析  mm/s",
             padding: [10, 10, 10, 10],
             textStyle: {
-              fontSize: 15
+              fontSize: 15 // 调整字体大小
+              // fontWeight: 'bold' // 加粗字体
             }
           },
           // toolbox: {
@@ -88,6 +89,7 @@ export default {
           },
           yAxis: {
             type: "value"
+            // boundaryGap: [0, '100%']
           },
           series: [
             {
@@ -97,12 +99,12 @@ export default {
               data: this.values,
               lineStyle: {
                 width: 1,
-                color: "rgb(255, 233, 36)"
+                color: "rgb(135, 206, 235)"
               },
               areaStyle: {
                 color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                  { offset: 0, color: "rgb(255, 233, 36)" },
-                  { offset: 1, color: "rgb(255, 127, 0)" }
+                  { offset: 0, color: "rgb(135, 206, 235)" },
+                  { offset: 1, color: "rgb(0, 68, 204)" }
                 ])
               }
             }
@@ -113,7 +115,3 @@ export default {
   }
 };
 </script>
-
-<style>
-/* 可以在这里添加一些样式 */
-</style>

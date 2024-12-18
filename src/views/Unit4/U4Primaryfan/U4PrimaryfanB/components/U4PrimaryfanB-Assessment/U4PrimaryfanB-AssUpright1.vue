@@ -1,4 +1,3 @@
-
 <template>
   <!-- 频谱图容器 -->
   <div
@@ -34,7 +33,8 @@ export default {
   data() {
     return {
       value: 0, // 初始数值
-      apiUrl: "http://localhost:8081/api/device/queryJiankangdu?measurements=1YBjkd"
+      apiUrl:
+        "http://localhost:8081/api/device/queryJiankangdu?measurements=1YBjkd"
     };
   },
   mounted() {
@@ -46,7 +46,7 @@ export default {
     fetchData() {
       axios
         .post(this.apiUrl)
-        .then((response) => {
+        .then(response => {
           const apiResponse = response.data;
           if (apiResponse.state && apiResponse.data.length > 0) {
             // 获取后端返回的第一个数值，并保留两位小数
@@ -56,7 +56,7 @@ export default {
             console.error("API返回数据为空或状态错误");
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.error("获取后端数据失败:", error);
         });
     },
