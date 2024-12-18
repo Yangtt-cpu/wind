@@ -4,7 +4,6 @@
 
 <script>
 import * as echarts from "echarts";
-import { getqueryPredictPass2 } from "@/api/routes";
 
 export default {
   name: "DynamicDataChart",
@@ -82,7 +81,7 @@ export default {
     getDBData() {
       this.now = new Date(+this.now + this.oneDay);
       fetch(
-        "http://localhost:8081/api/device/queryPredictPass2?measurements=RMS"
+        "http://localhost:8081/api/device/queryPredictPass?measurements=RMS"
       )
         .then(resp => resp.json())
         .then(data => {
