@@ -1,39 +1,29 @@
 <script setup lang="tsx">
 import { onMounted, ref, onBeforeUnmount } from "vue";
 import * as echarts from "echarts";
-import axios from "axios"; // 添加 axios 请求后端数据
 import { addDialog } from "@/components/ReDialog";
 import { message } from "@/utils/message";
-import React, { useEffect, useRef } from 'react';
 
 // 图表实例引用
 const chartContainer = ref<HTMLDivElement | null>(null);
 let chartInstance: echarts.ECharts | null = null;
 
 // 数据定义
-const dataSeries = ref<{ name: string; value: [string, number] }[]>([]); // 存储请求到的后端数据
+const now = ref(new Date(2024, 4, 10));
+const oneDay = 24 * 3600 * 1000;
+const dataSeries = ref([[], [], []]); // 三组数据
 
-// 后端请求函数
-async function fetchData() {
-  try {
-    const response = await axios.post(
-      "http://localhost:8081/api/device/queryPredictPass?measurements=AVG_1YBQXRMS"
-    );
-
-    const fetchedData = response.data?.data || [];
-    if (Array.isArray(fetchedData)) {
-      // 格式化数据
-      dataSeries.value = fetchedData.map((item: any) => ({
-        name: item.time,
-        value: [
-          item.time.replace(" ", "T"), // 时间作为横坐标
-          parseFloat(item.value) // 数据值作为纵坐标
-        ]
-      }));
-    }
-  } catch (error) {
-    console.error("Error fetching data:", error);
-  }
+function randomData(seriesNumber: number) {
+  now.value = new Date(+now.value + oneDay);
+  const randomValue = Math.random() * 21 - 10;
+  const result = {
+    name: now.value.toString(),
+    value: [
+      `${now.value.getFullYear()}/${now.value.getMonth() + 1}/${now.value.getDate()}`,
+      Math.round(randomValue)
+    ]
+  };
+  return result;
 }
 
 // 初始化图表
@@ -50,7 +40,7 @@ function initChart() {
       containLabel: true
     },
     title: {
-      text: "振动趋势  mm/s",
+      text: "有效值",
       textStyle: { fontSize: 15 }
     },
     tooltip: {
@@ -59,130 +49,33 @@ function initChart() {
         `${params[0].axisValueLabel}: <br/>${params[0].seriesName}: ${params[0].data[1]}`,
       axisPointer: { animation: false }
     },
-    // legend: {
-    //   data: ["有效值"],
-    //   top: "5%",
-    //   left: "40%",
-    // },
-    xAxis: {
-      type: "category",
-      data: dataSeries.value.map(item => item.value[0])
+    legend: {
+      data: ["时间"],
+      top: "5%",
+      left: "40%"
     },
-    yAxis: { type: "value", min: 0 },
+    xAxis: { type: "category" },
+    yAxis: { type: "value", min: 0, max: 8 },
     series: [
       {
-        name: "有效值",
+        name: "时间",
         type: "line",
-        showSymbol: true,
-        data: dataSeries.value.map(item => item.value)
+        showSymbol: false,
+        data: dataSeries.value[0]
       }
     ]
   };
 
   chartInstance.setOption(option);
+
+  // 每 10 秒更新一次数据
+  setInterval(() => {
+    dataSeries.value[0].push(randomData(1));
+    chartInstance?.setOption({ series: [{ data: dataSeries.value[0] }] });
+  }, 1000);
 }
 
-// 图表内容组件
-const ChartContent = () => {
-  const chartRef = useRef(null); // 用来引用DOM节点
-
-  useEffect(() => {
-    const chartDom = chartRef.current;
-    const myChart = echarts.init(chartDom);
-    const option = {
-      title: {
-        text: "Stacked Line"
-      },
-      tooltip: {
-        trigger: "axis"
-      },
-      legend: {
-        data: ["Email", "Union Ads", "Video Ads", "Direct", "Search Engine"]
-      },
-      grid: {
-        left: "3%",
-        right: "4%",
-        bottom: "3%",
-        containLabel: true
-      },
-      toolbox: {
-        feature: {
-          saveAsImage: {}
-        }
-      },
-      xAxis: {
-        type: "category",
-        boundaryGap: false,
-        data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
-      },
-      yAxis: {
-        type: "value"
-      },
-      series: [
-        {
-          name: "Email",
-          type: "line",
-          stack: "Total",
-          data: [120, 132, 101, 134, 90, 230, 210]
-        },
-        {
-          name: "Union Ads",
-          type: "line",
-          stack: "Total",
-          data: [220, 182, 191, 234, 290, 330, 310]
-        },
-        {
-          name: "Video Ads",
-          type: "line",
-          stack: "Total",
-          data: [150, 232, 201, 154, 190, 330, 410]
-        },
-        {
-          name: "Direct",
-          type: "line",
-          stack: "Total",
-          data: [320, 332, 301, 334, 390, 330, 320]
-        },
-        {
-          name: "Search Engine",
-          type: "line",
-          stack: "Total",
-          data: [820, 932, 901, 934, 1290, 1330, 1320]
-        }
-      ]
-    };
-
-    // 设置图表的配置项
-    if (option) {
-      myChart.setOption(option);
-    }
-
-    // 清理图表实例
-    return () => {
-      myChart.dispose();
-    };
-  }, []); // 空依赖数组，确保只初始化一次
-
-  return <div style={{ width: "100%", height: "400px" }} ref={chartRef} />;
-};
-
-// 更新数据并刷新图表
-async function updateChart() {
-  await fetchData();
-  chartInstance?.setOption({
-    xAxis: { data: dataSeries.value.map(item => item.value[0]) },
-    series: [{ data: dataSeries.value.map(item => item.value) }]
-  });
-}
-
-onMounted(async () => {
-  await updateChart();
-  initChart();
-
-  // 每 10 秒从后端拉取最新数据并更新图表
-  setInterval(updateChart, 10000);
-});
-
+onMounted(initChart);
 onBeforeUnmount(() => {
   chartInstance?.dispose();
 });
@@ -195,8 +88,7 @@ function onFullscreenIconClick() {
     fullscreenCallBack: ({ options }: { options: any }) => {
       message(options.fullscreen ? "全屏" : "非全屏");
     },
-    contentRenderer: () => <ChartContent />
-    //contentRenderer: () => <p>123</p>
+    contentRenderer: () => <p>弹框内容-全屏按钮和全屏事件</p>
   });
 }
 </script>
@@ -214,7 +106,6 @@ function onFullscreenIconClick() {
     >
   </div>
 </template>
-
 <style scoped>
 .down-content1 {
   width: 100%;

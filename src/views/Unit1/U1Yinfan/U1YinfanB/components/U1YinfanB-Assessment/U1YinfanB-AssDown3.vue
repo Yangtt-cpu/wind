@@ -28,10 +28,10 @@ export default {
       this.updateChart(); // 初始化图表
     },
     fetchData() {
-      fetch("http://localhost:8081/api/device/queryU1YFBxblpamp")
+      fetch('http://localhost:8081/api/device/queryblpamp')
         .then(response => {
           if (!response.ok) {
-            throw new Error("回应不ok~");
+            throw new Error('回应不ok~');
           }
           return response.json();
         })
@@ -41,11 +41,11 @@ export default {
             this.values = apiResponse.data.map(item => parseFloat(item.value));
             this.updateChart(); // 更新图表
           } else {
-            console.error("API返回的数据中不包含data数组或状态不成功!!!");
+            console.error('API返回的数据中不包含data数组或状态不成功!!!');
           }
         })
         .catch(error => {
-          console.error("错啦：", error);
+          console.error('错啦：', error);
         });
     },
     updateChart() {
@@ -59,21 +59,21 @@ export default {
           },
           title: {
             left: "",
-            text: "包络谱  mm/s",
+            text: "包络谱",
             padding: [10, 10, 10, 10],
             textStyle: {
               fontSize: 15
             }
           },
-          // toolbox: {
-          //   feature: {
-          //     dataZoom: {
-          //       yAxisIndex: "none"
-          //     },
-          //     restore: {},
-          //     saveAsImage: {}
-          //   }
-          // },
+          toolbox: {
+            feature: {
+              dataZoom: {
+                yAxisIndex: "none"
+              },
+              restore: {},
+              saveAsImage: {}
+            }
+          },
           grid: {
             left: "5%",
             right: "5%",

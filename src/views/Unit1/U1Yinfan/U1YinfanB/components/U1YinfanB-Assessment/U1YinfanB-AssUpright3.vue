@@ -76,7 +76,7 @@
             delay: 1000
           }
         }"
-        >YXKK710
+        >Y8-39-9D
       </span>
       <span class="text-sm text-gray-500">型号</span>
     </div>
@@ -147,7 +147,7 @@
             delay: 1000
           }
         }"
-        >1052 RPM</span
+        >1450 RPM</span
       >
       <span class="text-sm text-gray-500">转速</span>
     </div>

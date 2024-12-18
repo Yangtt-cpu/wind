@@ -1,4 +1,5 @@
 <template>
+  <!-- 频谱图容器 -->
   <div
     ref="echartsContainer"
     class="w-full h-full"
@@ -28,7 +29,7 @@ export default {
       this.updateChart();
     },
     fetchData() {
-      fetch("http://localhost:8081/api/device/queryU1YFBxfftamp")
+      fetch("http://localhost:8081/api/device/queryfftamp")
         .then(response => {
           if (!response.ok) {
             throw new Error("回应不ok~");
@@ -59,22 +60,22 @@ export default {
           },
           title: {
             left: "",
-            text: "频谱分析  mm/s",
+            text: "频谱分析",
             padding: [10, 10, 10, 10],
             textStyle: {
               fontSize: 15 // 调整字体大小
               // fontWeight: 'bold' // 加粗字体
             }
           },
-          // toolbox: {
-          //   feature: {
-          //     dataZoom: {
-          //       yAxisIndex: "none"
-          //     },
-          //     restore: {},
-          //     saveAsImage: {}
-          //   }
-          // },
+          toolbox: {
+            feature: {
+              dataZoom: {
+                yAxisIndex: "none"
+              },
+              restore: {},
+              saveAsImage: {}
+            }
+          },
           grid: {
             left: "5%",
             right: "5%",

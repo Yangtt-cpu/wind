@@ -254,9 +254,7 @@ export default {
             {
               path: "/Unit1/U1Yinfan/U1YinfanB/U1YinfanB-Faultdiagnosis",
               component: () =>
-                import(
-                  "@/views/Unit1/U1Yinfan/U1YinfanB/U1YinfanB-Faultdiagnosis.vue"
-                ),
+                import("@/views/PrimaryFan/PrimaryFan-FaultDiagnosis.vue"),
               name: "U1YinfanB-Faultdiagnosis",
               meta: {
                 title: "故障诊断"
@@ -265,9 +263,7 @@ export default {
             {
               path: "/Unit1/U1Yinfan/U1YinfanB/U1YinfanB-Deterioration",
               component: () =>
-                import(
-                  "@/views/Unit1/U1Yinfan/U1YinfanB/U1YinfanB-Deterioration.vue"
-                ),
+                import("@/views/PrimaryFan/PrimaryFan-DeteriorationTrend.vue"),
               name: "U1YinfanB-Deterioration",
               meta: {
                 title: "劣化趋势"

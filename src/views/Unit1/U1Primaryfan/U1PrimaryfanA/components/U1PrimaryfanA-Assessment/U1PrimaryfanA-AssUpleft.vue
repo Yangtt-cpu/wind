@@ -185,9 +185,9 @@ const fetchqueryPredictPass2 = async () => {
   } else {
     queryPredictPass2.value = "0.00"; // 如果数组为空，可以设置为 "0.00" 或其他默认值
   }
-  console.log(res, "res");
+  console.log(res, "res"); 
 };
-fetchqueryPredictPass2();
+fetchqueryPredictPass2(); 
 
 
 import { getqueryAlert } from "@/api/routes";
