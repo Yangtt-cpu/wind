@@ -1,9 +1,10 @@
 <template>
-  <div ref="chartContainer" class="chart-container w-full h-[470px]"/>
+  <div ref="chartContainer" class="chart-container w-full h-[470px]" />
 </template>
 
 <script>
 import * as echarts from "echarts";
+import { markRaw } from "vue";
 import axios from "axios";
 
 export default {
@@ -13,7 +14,7 @@ export default {
       chart: null, // ECharts 实例
       healthData: [], // 历史健康度数据
       severeHealthData: [], // 严重健康问题数据
-      currentTime: Date.now() // 当前时间戳
+      currentTime: Math.floor(Date.now() / 1000) // 当前时间戳
     };
   },
   mounted() {
@@ -40,14 +41,24 @@ export default {
 
         // 解析历史健康度数据（左半部分）
         this.healthData = healthResponse.data?.data
-          .filter(item => new Date(item.time).getTime() <= currentTime)
-          .map(item => [new Date(item.time).getTime(), parseFloat(item.value)]);
-
+          .filter(
+            item =>
+              Math.floor(new Date(item.time).getTime() / 1000) <= currentTime
+          )
+          .map(item => [
+            Math.floor(new Date(item.time).getTime() / 1000),
+            parseFloat(item.value)
+          ]);
         // 解析严重健康问题数据（右半部分）
         this.severeHealthData = severeHealthResponse.data?.data
-          .filter(item => new Date(item.time).getTime() > currentTime)
-          .map(item => [new Date(item.time).getTime(), parseFloat(item.value)]);
-
+          .filter(
+            item =>
+              Math.floor(new Date(item.time).getTime() / 1000) > currentTime
+          )
+          .map(item => [
+            Math.floor(new Date(item.time).getTime() / 1000),
+            parseFloat(item.value)
+          ]);
         // 初始化图表
         this.$nextTick(() => {
           this.initChart();
@@ -66,15 +77,44 @@ export default {
       // 确定左右半边的时间范围
       const minTime =
         Math.min(...this.healthData.map(d => d[0])) ||
-        currentTime - 24 * 60 * 60 * 1000;
+        currentTime - 24 * 60 * 60;
       const maxTime =
         Math.max(...this.severeHealthData.map(d => d[0])) ||
-        currentTime + 24 * 60 * 60 * 1000;
+        currentTime + 24 * 60 * 60;
 
-      this.chart = echarts.init(this.$refs.chartContainer);
+      this.chart = markRaw(echarts.init(this.$refs.chartContainer));
+
+      // 下面是开始计算间隔，让他在图表上左右差不多
+      const timeDiffBeforeAll = currentTime - minTime;
+
+      const timeDiffAfterAll = maxTime - currentTime;
+      const multipleNum = Math.floor(timeDiffAfterAll / timeDiffBeforeAll);
+
+      const dataBefore = this.healthData.map((item, index) => {
+        const [time, value] = item;
+        const newTime = currentTime - (currentTime - time) * multipleNum;
+        return [newTime, value];
+      });
+
+      const timestampToDateString = timestamp => {
+        const date = new Date(timestamp * 1000); // 将秒级时间戳转换为毫秒级时间戳
+        const year = date.getFullYear();
+        const month = (date.getMonth() + 1).toString().padStart(2, "0");
+        const day = date.getDate().toString().padStart(2, "0");
+        return `${year}-${month}-${day}`;
+      };
 
       this.chart.setOption({
-        tooltip: { trigger: "axis" },
+        tooltip: {
+          trigger: "axis",
+          show: true,
+          formatter: params => {
+            const { seriesName } = params[0];
+            const date = timestampToDateString(params[0].value[0]);
+            const value = params[0].value[1];
+            return `${date}<br/> ${seriesName}: ${value}`;
+          }
+        },
         legend: {
           data: ["历史健康度", "严重健康问题"],
           left: "center",
@@ -83,51 +123,37 @@ export default {
         },
         xAxis: {
           type: "time",
-          splitNumber: 10,
-          min: minTime,
-          max: maxTime,
           axisLabel: {
             formatter: value => {
-              const date = new Date(value);
-              return `${date.getFullYear()}-${(date.getMonth() + 1)
-                .toString()
-                .padStart(2, "0")}-${date
-                .getDate()
-                .toString()
-                .padStart(2, "0")}`;
+              const time = value;
+              if (time > currentTime) {
+                return timestampToDateString(time);
+              }
+              const beforeTime =
+                currentTime - (currentTime - time) / multipleNum;
+              return timestampToDateString(beforeTime);
             }
-          },
-          markLine: {
-            silent: true,
-            symbol: "none",
-            label: { show: true, position: "start", formatter: "当前时间" },
-            lineStyle: { color: "#FF5733", type: "dashed" },
-            data: [{ xAxis: currentTime }]
           }
         },
         yAxis: {
-          type: "value",
-          name: "健康状况",
-          axisLabel: { formatter: "{value}" }
+          type: "value"
         },
         series: [
           {
             name: "历史健康度",
+            data: dataBefore,
             type: "line",
             smooth: true,
-            data:
-              this.healthData.length > 0 ? this.healthData : [[Date.now(), 0]],
+            xAxisIndex: 0,
             lineStyle: { color: "#00A2FF", width: 3 },
             itemStyle: { color: "#00A2FF" }
           },
           {
             name: "严重健康问题",
+            data: this.severeHealthData,
             type: "line",
             smooth: true,
-            data:
-              this.severeHealthData.length > 0
-                ? this.severeHealthData
-                : [[Date.now(), 0]],
+            xAxisIndex: 0,
             lineStyle: { color: "red", width: 3 },
             itemStyle: { color: "red" }
           }
