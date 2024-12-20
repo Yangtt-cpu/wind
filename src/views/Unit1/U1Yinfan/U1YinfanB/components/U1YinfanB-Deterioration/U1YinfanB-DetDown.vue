@@ -1,5 +1,5 @@
 <template>
-  <div ref="chartContainer" class="chart-container w-full h-[470px]"/>
+  <div class="chart-container w-full h-[470px]" ref="chartContainer"></div>
 </template>
 
 <script>
@@ -11,133 +11,136 @@ export default {
   data() {
     return {
       chart: null, // ECharts 实例
-      healthData: [], // 历史健康度数据
-      severeHealthData: [], // 严重健康问题数据
-      currentTime: Date.now() // 当前时间戳
+      leftHealthData: [], // 左半部分健康度数据
+      rightHealthData: [] // 右半部分严重健康问题数据
     };
   },
   mounted() {
-    this.fetchChartData();
-    window.addEventListener("resize", this.resizeChart);
-  },
-  beforeUnmount() {
-    window.removeEventListener("resize", this.resizeChart);
-    if (this.chart) this.chart.dispose();
+    this.fetchData(); // 获取数据并渲染图表
   },
   methods: {
-    // 获取健康度和严重健康问题数据
-    async fetchChartData() {
+    // 获取健康度和严重健康问题的数据
+    async fetchData() {
       try {
+        // 获取健康度数据（左侧部分，前50个数据）
         const healthResponse = await axios.post(
           "http://localhost:8081/api/device/queryJiankangdu2?measurements=1YBjkd"
         );
-        const severeHealthResponse = await axios.post(
+
+        // 获取严重健康问题数据（右侧部分，后50个数据）
+        const severeResponse = await axios.post(
           "http://localhost:8081/api/device/queryJiankangdu2?measurements=1YBjkdpredict"
         );
 
-        // 当前时间戳
-        const currentTime = this.currentTime;
+        // 处理左侧健康度数据，取前50个，仅提取 value
+        this.leftHealthData = healthResponse.data.data
+          .slice(-50)
+          .map(item => parseFloat(item.value));
 
-        // 解析历史健康度数据（左半部分）
-        this.healthData = healthResponse.data?.data
-          .filter(item => new Date(item.time).getTime() <= currentTime)
-          .map(item => [new Date(item.time).getTime(), parseFloat(item.value)]);
+        // 打印左侧健康度数据
+        console.log("Left Health Data (Values):", this.leftHealthData);
 
-        // 解析严重健康问题数据（右半部分）
-        this.severeHealthData = severeHealthResponse.data?.data
-          .filter(item => new Date(item.time).getTime() > currentTime)
-          .map(item => [new Date(item.time).getTime(), parseFloat(item.value)]);
+        // 处理右侧严重健康问题数据，取后50个，仅提取 value
+        this.rightHealthData = severeResponse.data.data
+          .slice(-50)
+          .map(item => parseFloat(item.value));
 
-        // 初始化图表
-        this.$nextTick(() => {
-          this.initChart();
-        });
+        // 打印右侧严重健康问题数据
+        console.log("Right Health Data (Values):", this.rightHealthData);
+
+        // 渲染图表
+        this.renderChart();
       } catch (error) {
-        console.error("获取数据失败：", error);
+        console.error("数据获取失败：", error);
       }
     },
 
-    // 初始化 ECharts 图表
-    initChart() {
+    // 渲染 ECharts 图表
+    renderChart() {
       if (!this.$refs.chartContainer) return;
-
-      const currentTime = this.currentTime;
-
-      // 确定左右半边的时间范围
-      const minTime =
-        Math.min(...this.healthData.map(d => d[0])) ||
-        currentTime - 24 * 60 * 60 * 1000;
-      const maxTime =
-        Math.max(...this.severeHealthData.map(d => d[0])) ||
-        currentTime + 24 * 60 * 60 * 1000;
 
       this.chart = echarts.init(this.$refs.chartContainer);
 
+      // 设置 ECharts 配置
       this.chart.setOption({
-        tooltip: { trigger: "axis" },
+        tooltip: {
+          trigger: "axis",
+          formatter: params => {
+            return params
+              .map(item => `${item.seriesName}: ${item.value.toFixed(2)}`)
+              .join("<br/>");
+          }
+        },
         legend: {
-          data: ["历史健康度", "严重健康问题"],
-          left: "center",
-          top: "0%",
-          textStyle: { fontSize: 14, color: "#333" }
+          data: ["历史健康度", "趋势变化"], // 图例名称与 series 的 name 对应
+          top: "5%", // 图例的位置（上方）
+          left: "center" // 图例居中
         },
         xAxis: {
-          type: "time",
-          splitNumber: 10,
-          min: minTime,
-          max: maxTime,
+          type: "category", // 使用分类坐标轴
+          name: "数据点",
+          boundaryGap: false, // 设置坐标轴起始不留空白
+          data: [
+            ...Array(
+              this.leftHealthData.length + this.rightHealthData.length
+            ).keys()
+          ], // 按总数据点数量生成 x 轴
           axisLabel: {
-            formatter: value => {
-              const date = new Date(value);
-              return `${date.getFullYear()}-${(date.getMonth() + 1)
-                .toString()
-                .padStart(2, "0")}-${date
-                .getDate()
-                .toString()
-                .padStart(2, "0")}`;
-            }
-          },
-          markLine: {
-            silent: true,
-            symbol: "none",
-            label: { show: true, position: "start", formatter: "当前时间" },
-            lineStyle: { color: "#FF5733", type: "dashed" },
-            data: [{ xAxis: currentTime }]
+            show: false, // 显示横轴标签
+            formatter: value => `点${value + 1}` // 标签格式为 点1、点2...
           }
         },
         yAxis: {
           type: "value",
           name: "健康状况",
-          axisLabel: { formatter: "{value}" }
+          min: 0,
+          max: 100,
+          axisLabel: {
+            formatter: "{value}"
+          }
         },
         series: [
           {
             name: "历史健康度",
             type: "line",
             smooth: true,
-            data:
-              this.healthData.length > 0 ? this.healthData : [[Date.now(), 0]],
-            lineStyle: { color: "#00A2FF", width: 3 },
-            itemStyle: { color: "#00A2FF" }
+            data: [
+              ...this.leftHealthData,
+              ...Array(this.rightHealthData.length).fill(null)
+            ], // 填补右半部分数据为空值
+            lineStyle: {
+              color: "blue", // 左侧线条为蓝色
+              width: 3 // 设置线条宽度
+            },
+            itemStyle: {
+              color: "blue" // 数据点颜色为蓝色
+            },
+            showSymbol: true // 显示数据点
           },
           {
-            name: "严重健康问题",
+            name: "趋势变化",
             type: "line",
             smooth: true,
-            data:
-              this.severeHealthData.length > 0
-                ? this.severeHealthData
-                : [[Date.now(), 0]],
-            lineStyle: { color: "red", width: 3 },
-            itemStyle: { color: "red" }
+            data: [
+              ...Array(this.leftHealthData.length).fill(null),
+              ...this.rightHealthData
+            ], // 填补左半部分数据为空值
+            lineStyle: {
+              color: "red", // 右侧线条为红色
+              width: 3
+            },
+            itemStyle: {
+              color: "red" // 数据点颜色为红色
+            },
+            showSymbol: true // 显示数据点
           }
         ]
       });
-    },
-
-    // 调整图表大小
-    resizeChart() {
-      if (this.chart) this.chart.resize();
+    }
+  },
+  beforeUnmount() {
+    if (this.chart) {
+      this.chart.dispose();
     }
   }
 };

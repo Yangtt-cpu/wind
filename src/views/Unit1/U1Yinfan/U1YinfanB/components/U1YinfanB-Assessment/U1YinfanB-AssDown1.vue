@@ -64,10 +64,10 @@ const ChartContainer = defineComponent({
       try {
         const [xResponse, yResponse] = await Promise.all([
           axios.post(
-            "http://localhost:8081/api/device/queryPredictPass?measurements=1YBQXRMS"
+            "http://localhost:8081/api/device/queryPredictPass?measurements=AVG_1YBQXRMS"
           ),
           axios.post(
-            "http://localhost:8081/api/device/queryPredictPass?measurements=1YBQYRMS"
+            "http://localhost:8081/api/device/queryPredictPass?measurements=AVG_1YBQYRMS"
           )
         ]);
 
@@ -135,7 +135,7 @@ onBeforeUnmount(() => {
 
 <template>
   <div
-    class="down-content1 flex justify-center items-center h-full bg-white rounded-md mr-1"
+    class="U1YinfanB-AssDown1 flex justify-center items-center h-full bg-white rounded-md mr-1"
     style="position: relative; height: 100%; width: 100%"
   >
     <!-- 主图表容器 -->
@@ -148,7 +148,7 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped>
-.down-content1 {
+.U1YinfanB-AssDown1 {
   width: 100%;
   height: 100%;
   display: flex;

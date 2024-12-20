@@ -1,10 +1,6 @@
 <script setup lang="ts">
 import { useRouter } from "vue-router";
 import { defineComponent } from "vue";
-import U1PrimaryfanADetDown from "./components/U1PrimaryfanA-Deterioration/U1PrimaryfanA-DetDown.vue";
-import U1PrimaryfanADetUp1 from "./components/U1PrimaryfanA-Deterioration/U1PrimaryfanA-DetUp1.vue";
-import U1PrimaryfanADetUp2 from "./components/U1PrimaryfanA-Deterioration/U1PrimaryfanA-DetUp2.vue";
-import U1PrimaryfanADetUp3 from "./components/U1PrimaryfanA-Deterioration/U1PrimaryfanA-DetUp2.vue";
 import U1YinfanBDetDown from "./components/U1YinfanB-Deterioration/U1YinfanB-DetDown.vue";
 import U1YinfanBDetUp1 from "./components/U1YinfanB-Deterioration/U1YinfanB-DetUp1.vue";
 import U1YinfanBDetUp2 from "./components/U1YinfanB-Deterioration/U1YinfanB-DetUp2.vue";

@@ -34,7 +34,7 @@ export default {
     return {
       value: 0, // 初始数值
       apiUrl:
-        "http://localhost:8081/api/device/queryJiankangdu?measurements=1YBjkd"
+        "http://localhost:8081/api/device/queryJiankangdu?measurements=4YCBjkd"
     };
   },
   mounted() {

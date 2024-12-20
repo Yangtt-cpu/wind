@@ -1,80 +1,52 @@
 <script setup lang="tsx">
-import { onMounted, ref, onBeforeUnmount } from "vue";
+import { onMounted, ref, onBeforeUnmount, nextTick, defineComponent } from "vue";
 import * as echarts from "echarts";
-import axios from "axios"; // 添加 axios 请求后端数据
-import { addDialog } from "@/components/ReDialog";
+import axios from "axios";
+import { addDialog } from "@/components/ReDialog"; // 弹窗组件
 import { message } from "@/utils/message";
-import React, { useEffect, useRef } from "react";
 
 // 图表实例引用
 const chartContainer = ref<HTMLDivElement | null>(null);
 let chartInstance: echarts.ECharts | null = null;
 
-// 数据定义
-const dataSeries = ref<{ name: string; value: [string, number] }[]>([]); // 存储请求到的后端数据
+// 数据定义：主图表数据
+const mainChartData = ref<{ time: string; value: number }[]>([]);
 
-// 后端请求函数
-async function fetchData() {
+// 后端请求函数：主图表数据（AVG_1YBQXRMS）
+async function fetchMainChartData() {
   try {
     const response = await axios.post(
-      "http://localhost:8081/api/device/queryPredictPass?measurements=AVG_1YBQXRMS"
+      "http://localhost:8081/api/device/queryPredictPass?measurements=AVG_4YCBQXRMS"
     );
-
     const fetchedData = response.data?.data || [];
-    if (Array.isArray(fetchedData)) {
-      // 格式化数据
-      dataSeries.value = fetchedData.map((item: any) => ({
-        name: item.time,
-        value: [
-          item.time.replace(" ", "T"), // 时间作为横坐标
-          parseFloat(item.value) // 数据值作为纵坐标
-        ]
-      }));
-    }
+    mainChartData.value = fetchedData.map((item: any) => ({
+      time: item.time.replace(" ", "T"),
+      value: parseFloat(item.value)
+    }));
   } catch (error) {
-    console.error("Error fetching data:", error);
+    console.error("Error fetching main chart data:", error);
   }
 }
 
-// 初始化图表
-function initChart() {
+// 初始化主图表
+async function initChart() {
   if (!chartContainer.value) return;
+
+  await fetchMainChartData();
+
   chartInstance = echarts.init(chartContainer.value);
 
   const option = {
-    grid: {
-      left: "5%",
-      right: "5%",
-      bottom: "5%",
-      top: "25%",
-      containLabel: true
-    },
-    title: {
-      text: "振动趋势  mm/s",
-      textStyle: { fontSize: 15 }
-    },
-    tooltip: {
-      trigger: "axis",
-      formatter: (params: any) =>
-        `${params[0].axisValueLabel}: <br/>${params[0].seriesName}: ${params[0].data[1]}`,
-      axisPointer: { animation: false }
-    },
-    // legend: {
-    //   data: ["有效值"],
-    //   top: "5%",
-    //   left: "40%",
-    // },
-    xAxis: {
-      type: "category",
-      data: dataSeries.value.map(item => item.value[0])
-    },
-    yAxis: { type: "value", min: 0 },
+    title: { text: "振动趋势  mm/s" },
+    tooltip: { trigger: "axis" },
+    grid: { left: "5%", right: "5%", bottom: "5%", containLabel: true },
+    xAxis: { type: "category", data: mainChartData.value.map(item => item.time) },
+    yAxis: { type: "value" },
     series: [
       {
-        name: "有效值",
+        name: "AVG_有效值",
         type: "line",
-        showSymbol: true,
-        data: dataSeries.value.map(item => item.value)
+        data: mainChartData.value.map(item => item.value)
       }
     ]
   };
@@ -82,112 +54,67 @@ function initChart() {
   chartInstance.setOption(option);
 }
 
-// 图表内容组件
-const ChartContent = () => {
-  const chartRef = useRef(null); // 用来引用DOM节点
+// 详细数据页面：x轴有效值和y轴有效值
+const ChartContainer = defineComponent({
+  setup() {
+    const chartRef = ref<HTMLDivElement | null>(null);
+    let chartInstance: echarts.ECharts | null = null;
 
-  useEffect(() => {
-    const chartDom = chartRef.current;
-    const myChart = echarts.init(chartDom);
-    const option = {
-      title: {
-        text: "Stacked Line"
-      },
-      tooltip: {
-        trigger: "axis"
-      },
-      legend: {
-        data: ["Email", "Union Ads", "Video Ads", "Direct", "Search Engine"]
-      },
-      grid: {
-        left: "3%",
-        right: "4%",
-        bottom: "3%",
-        containLabel: true
-      },
-      toolbox: {
-        feature: {
-          saveAsImage: {}
-        }
-      },
-      xAxis: {
-        type: "category",
-        boundaryGap: false,
-        data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
-      },
-      yAxis: {
-        type: "value"
-      },
-      series: [
-        {
-          name: "Email",
-          type: "line",
-          stack: "Total",
-          data: [120, 132, 101, 134, 90, 230, 210]
-        },
-        {
-          name: "Union Ads",
-          type: "line",
-          stack: "Total",
-          data: [220, 182, 191, 234, 290, 330, 310]
-        },
-        {
-          name: "Video Ads",
-          type: "line",
-          stack: "Total",
-          data: [150, 232, 201, 154, 190, 330, 410]
-        },
-        {
-          name: "Direct",
-          type: "line",
-          stack: "Total",
-          data: [320, 332, 301, 334, 390, 330, 320]
-        },
-        {
-          name: "Search Engine",
-          type: "line",
-          stack: "Total",
-          data: [820, 932, 901, 934, 1290, 1330, 1320]
-        }
-      ]
+    const fetchDetailedData = async () => {
+      try {
+        const [xResponse, yResponse] = await Promise.all([
+          axios.post(
+            "http://localhost:8081/api/device/queryPredictPass?measurements=AVG_4YCBQXRMS"
+          ),
+          axios.post(
+            "http://localhost:8081/api/device/queryPredictPass?measurements=AVG_4YCBQYRMS"
+          )
+        ]);
+
+        const xData = xResponse.data?.data || [];
+        const yData = yResponse.data?.data || [];
+
+        return {
+          xAxis: xData.map((item: any) => item.time.replace(" ", "T")),
+          xValues: xData.map((item: any) => parseFloat(item.value)),
+          yValues: yData.map((item: any) => parseFloat(item.value))
+        };
+      } catch (error) {
+        console.error("Error fetching detailed data:", error);
+        return { xAxis: [], xValues: [], yValues: [] };
+      }
     };
 
-    // 设置图表的配置项
-    if (option) {
-      myChart.setOption(option);
-    }
+    const initChart = async () => {
+      if (!chartRef.value) return;
 
-    // 清理图表实例
-    return () => {
-      myChart.dispose();
+      const { xAxis, xValues, yValues } = await fetchDetailedData();
+
+      chartInstance = echarts.init(chartRef.value);
+
+      chartInstance.setOption({
+        title: { text: "详细振动趋势数据" },
+        tooltip: { trigger: "axis" },
+        legend: { data: ["x轴有效值", "y轴有效值"] },
+        xAxis: { type: "category", data: xAxis },
+        yAxis: { type: "value" },
+        series: [
+          { name: "x轴有效值", type: "line", data: xValues },
+          { name: "y轴有效值", type: "line", data: yValues }
+        ]
+      });
     };
-  }, []); // 空依赖数组，确保只初始化一次
 
-  return <div style={{ width: "100%", height: "400px" }} ref={chartRef} />;
-};
+    onMounted(initChart);
+    onBeforeUnmount(() => {
+      chartInstance?.dispose();
+    });
 
-// 更新数据并刷新图表
-async function updateChart() {
-  await fetchData();
-  chartInstance?.setOption({
-    xAxis: { data: dataSeries.value.map(item => item.value[0]) },
-    series: [{ data: dataSeries.value.map(item => item.value) }]
-  });
-}
-
-onMounted(async () => {
-  await updateChart();
-  initChart();
-
-  // 每 10 秒从后端拉取最新数据并更新图表
-  setInterval(updateChart, 10000);
+    return () => <div ref={chartRef} style={{ width: "100%", height: "400px" }} />;
+  }
 });
 
-onBeforeUnmount(() => {
-  chartInstance?.dispose();
-});
-
-// 全屏按钮和全屏事件
+// 全屏按钮点击事件
 function onFullscreenIconClick() {
   addDialog({
     title: "详细数据",
@@ -195,23 +122,28 @@ function onFullscreenIconClick() {
     fullscreenCallBack: ({ options }: { options: any }) => {
       message(options.fullscreen ? "全屏" : "非全屏");
     },
-    contentRenderer: () => <ChartContent />
-    //contentRenderer: () => <p>123</p>
+    contentRenderer: () => <ChartContainer />
   });
 }
+
+// 组件挂载时初始化主图表
+onMounted(initChart);
+onBeforeUnmount(() => {
+  chartInstance?.dispose();
+});
 </script>
 
 <template>
   <div
     class="down-content1 flex justify-center items-center h-full bg-white rounded-md mr-1"
-    style="position: relative"
+    style="position: relative; height: 100%; width: 100%"
   >
-    <!-- 图表容器 -->
+    <!-- 主图表容器 -->
     <div ref="chartContainer" class="chart-container" />
     <!-- 全屏按钮 -->
-    <el-button class="fullscreen-btn" @click="onFullscreenIconClick"
-      >详细数据</el-button
-    >
+    <el-button class="fullscreen-btn" @click="onFullscreenIconClick">
+      详细数据
+    </el-button>
   </div>
 </template>
 
@@ -224,15 +156,15 @@ function onFullscreenIconClick() {
   align-items: center;
 }
 .chart-container {
-  width: 100%; /* 自适应父容器宽度 */
-  height: 100%; /* 自适应父容器高度 */
-  position: relative; /* 使按钮可以相对定位 */
+  width: 100%;
+  height: 100%;
+  position: relative;
   flex-grow: 1;
 }
 .fullscreen-btn {
   position: absolute;
-  top: 10px; /* 距离顶部 10 像素 */
-  right: 10px; /* 距离右侧 10 像素 */
-  z-index: 10; /* 确保按钮位于图表之上 */
+  top: 10px;
+  right: 10px;
+  z-index: 10;
 }
 </style>

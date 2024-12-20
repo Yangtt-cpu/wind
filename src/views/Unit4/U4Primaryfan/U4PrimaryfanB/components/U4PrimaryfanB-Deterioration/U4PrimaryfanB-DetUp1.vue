@@ -214,7 +214,7 @@ const queryHealthValue = ref("0.0");
 // 获取警告数据的函数
 const fetchAlertData = async () => {
   try {
-    const response = await getqueryAlert("1YBalert"); // 请求后端数据并传入参数
+    const response = await getqueryAlert("4YCBalert"); // 请求后端数据并传入参数
     //console.log("后端返回的数据：", response);
 
     // 检查响应数据
@@ -232,7 +232,7 @@ const fetchAlertData = async () => {
 
 const fetchHealthData = async () => {
   try {
-    const response = await getqueryHealthValue("1YBjkd");
+    const response = await getqueryHealthValue("4YCjkd");
 
     // 打印整个响应对象，调试路径
     console.log("完整的后端返回数据：", response);

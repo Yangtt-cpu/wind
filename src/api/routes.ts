@@ -19,6 +19,26 @@ export const getqueryPredict1YBQYRMS = () => {
     "/device/queryPredictPass2?measurements=1YBQYRMS"
   );
 };
+export const getqueryPredict4YBQXRMS = () => {
+  return http.request(
+    "post",
+    "/device/queryPredictPass2?measurements=4YBQXRMS"
+  );
+};
+export const getqueryPredict4YBQYRMS = () => {
+  return http.request(
+    "post",
+    "/device/queryPredictPass2?measurements=4YBQYRMS"
+  );
+};
+
+export const getqueryPredictRMS = (measurements: string) => {
+  return http.request(
+    "post",
+    `/device/queryPredictPass2?measurements=${measurements}`
+  );
+};
+
 // export const getqueryPredictPassByline2 = () => {
 //   return http.request("post", "/device/queryPredictPassByline2?measurements=");
 // };

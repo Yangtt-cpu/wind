@@ -1,10 +1,6 @@
 <script setup lang="ts">
 import { useRouter } from "vue-router";
 import { defineComponent } from "vue";
-import Leftcontent1 from "@/views/PrimaryFan/components/PrimaryFan-FaultDiagnosis/Leftcontent1.vue";
-import Leftcontent2 from "@/views/PrimaryFan/components/PrimaryFan-FaultDiagnosis/Leftcontent2.vue";
-import Leftcontent3 from "@/views/PrimaryFan/components/PrimaryFan-FaultDiagnosis/Leftcontent3.vue";
-import Right from "@/views/PrimaryFan/components/PrimaryFan-FaultDiagnosis/Right.vue";
 import U1YinfanBFauLeft1 from "./components/U1YinfanB-Faultdiagnosis/U1YinfanB-FauLeft1.vue";
 import U1YinfanBFauLeft2 from "./components/U1YinfanB-Faultdiagnosis/U1YinfanB-FauLeft2.vue";
 import U1YinfanBFauLeft3 from "./components/U1YinfanB-Faultdiagnosis/U1YinfanB-FauLeft3.vue";

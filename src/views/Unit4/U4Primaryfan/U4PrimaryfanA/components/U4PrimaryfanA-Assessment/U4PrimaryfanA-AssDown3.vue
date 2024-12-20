@@ -28,7 +28,7 @@ export default {
       this.updateChart(); // 初始化图表
     },
     fetchData() {
-      fetch("http://localhost:8081/api/device/queryU1YFBxblpamp")
+      fetch("http://localhost:8081/api/device/queryU4YCAxblpamp")
         .then(response => {
           if (!response.ok) {
             throw new Error("回应不ok~");

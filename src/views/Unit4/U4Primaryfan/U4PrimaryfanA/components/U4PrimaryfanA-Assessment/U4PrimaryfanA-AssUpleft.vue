@@ -1,6 +1,6 @@
 <template>
   <div
-    name="U1YinfanBAss-Upleft"
+    name="U4PrimaryfanAAss-Upleft"
     class="basis-3/4 flex justify-center items-center rounded-lg bg-white mr-1.5"
   >
     <!-- 设备3维图+设备实时传感器信号：温度、振动位移背景图 -->
@@ -8,7 +8,7 @@
     <div class="relative h-full w-full rounded-lg bg-blue-50">
       <!-- 主图像 -->
       <img
-        name="U1YinfanBAssUpleft-img"
+        name="U4PrimaryfanAAssUpleft-img"
         src="/src/assets/PrimaryFan/Assessment/fengji2a.png"
         alt=""
         class="object-cover w-full h-full rounded-lg"
@@ -93,14 +93,34 @@
           font-size: 18px;
         "
       >
-        <div style="margin-bottom: 10px"><span>轴承</span></div>
+        <div style="margin-bottom: 10px"><span>驱动端轴承</span></div>
         <div>
           <span style="margin-right: 40px">X轴位移</span
-          ><span style="font-weight: bold">{{ queryPredict1YBQXRMS }}mm/s</span>
+          ><span style="font-weight: bold">{{ queryPredict4YCAQXRMS }}mm/s</span>
         </div>
         <div>
           <span style="margin-right: 40px">Y轴位移</span
-          ><span style="font-weight: bold">{{ queryPredict1YBQYRMS }}mm/s</span>
+          ><span style="font-weight: bold">{{ queryPredict4YCAQYRMS }}mm/s</span>
+        </div>
+      </div>
+      <div
+        style="
+          position: absolute;
+          top: 435px;
+          left: 528px;
+          color: rgb(0, 0, 0);
+          font-family: &quot;华文中宋&quot;, sans-serif;
+          font-size: 18px;
+        "
+      >
+        <div style="margin-bottom: 10px"><span>非驱动端轴承</span></div>
+        <div>
+          <span style="margin-right: 40px">X轴位移</span
+          ><span style="font-weight: bold">{{ queryPredict4YCAFXRMS }}mm/s</span>
+        </div>
+        <div>
+          <span style="margin-right: 40px">Y轴位移</span
+          ><span style="font-weight: bold">{{ queryPredict4YCAFYRMS }}mm/s</span>
         </div>
       </div>
       <!-- <svg style="position: absolute; top: 75px; left: 800px;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
@@ -139,15 +159,19 @@
 
 <script setup lang="ts">
 import {
-  getqueryPredict1YBQXRMS,
-  getqueryPredict1YBQYRMS,
+  getqueryPredict4YCAQXRMS,
+  getqueryPredict4YCAQYRMS,
+  getqueryPredict4YCAFXRMS,
+  getqueryPredict4YCAFYRMS,
   getqueryAlert
 } from "@/api/routes";
 import { ref, onMounted, onBeforeUnmount } from "vue";
 
 // 定义响应式数据
-const queryPredict1YBQXRMS = ref("0.00");
-const queryPredict1YBQYRMS = ref("0.00");
+const queryPredict4YCAQXRMS = ref("0.00");
+const queryPredict4YCAQYRMS = ref("0.00");
+const queryPredict4YCAFXRMS = ref("0.00");
+const queryPredict4YCAFYRMS = ref("0.00");
 const queryAlert = ref("未获取到数据");
 
 // 通用请求函数
@@ -155,26 +179,41 @@ const fetchData = async () => {
   try {
     // console.log("开始获取数据...");
 
-    const [res1, res2, alertRes] = await Promise.all([
-      getqueryPredict1YBQXRMS(),
-      getqueryPredict1YBQYRMS(),
-      getqueryAlert("1YBalert")
+    const [res1, res2, res3, res4, alertRes] = await Promise.all([
+      getqueryPredict4YCAQXRMS(),
+      getqueryPredict4YCAQYRMS(),
+      getqueryPredict4YCAFXRMS(),
+      getqueryPredict4YCAFYRMS(),
+      getqueryAlert("4YCAalert")
     ]);
 
-    // 更新 1YBQXRMS 数据
+    // 更新 4YAQXRMS 数据
     if (res1.data?.length > 0) {
       const lastItem = res1.data[res1.data.length - 1];
-      queryPredict1YBQXRMS.value = parseFloat(lastItem.value).toFixed(2);
+      queryPredict4YCAQXRMS.value = parseFloat(lastItem.value).toFixed(2);
     } else {
-      queryPredict1YBQXRMS.value = "0.00";
+      queryPredict4YCAQXRMS.value = "0.00";
     }
-
-    // 更新 1YBQYRMS 数据
+    // 更新 4YAQYRMS 数据
     if (res2.data?.length > 0) {
       const lastItem = res2.data[res2.data.length - 1];
-      queryPredict1YBQYRMS.value = parseFloat(lastItem.value).toFixed(2);
+      queryPredict4YCAQYRMS.value = parseFloat(lastItem.value).toFixed(2);
     } else {
-      queryPredict1YBQYRMS.value = "0.00";
+      queryPredict4YCAQYRMS.value = "0.00";
+    }
+    // 更新 4YAFXRMS 数据
+    if (res3.data?.length > 0) {
+      const lastItem = res3.data[res3.data.length - 1];
+      queryPredict4YCAFXRMS.value = parseFloat(lastItem.value).toFixed(2);
+    } else {
+      queryPredict4YCAFXRMS.value = "0.00";
+    }
+    // 更新 4YAFYRMS 数据
+    if (res4.data?.length > 0) {
+      const lastItem = res4.data[re4.data.length - 1];
+      queryPredictAYCAFYRMS.value = parseFloat(lastItem.value).toFixed(2);
+    } else {
+      queryPredict4YCAFYRMS.value = "0.00";
     }
 
     if (alertRes?.data?.length > 0) {

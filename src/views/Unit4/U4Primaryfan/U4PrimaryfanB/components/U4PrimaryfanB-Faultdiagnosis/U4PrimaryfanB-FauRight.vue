@@ -235,9 +235,9 @@ export default {
   methods: {
     fetchFaultData() {
       const apiUrl =
-        "http://localhost:8081/api/device/queryFault?device=一号机引风机B";
+        "http://localhost:8081/api/device/queryFault?device=四号机一次风机B";
       axios
-        .post(apiUrl, { device: "一号机引风机B" }) // 根据实际设备名修改
+        .post(apiUrl, { device: "四号机一次风机B" }) // 根据实际设备名修改
         .then(response => {
           console.log("后端返回数据:", response.data); // 打印返回的数据
           const data = response.data.data;

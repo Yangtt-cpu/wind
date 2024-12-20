@@ -121,7 +121,7 @@
         <div>
           <span style="margin-right: 30px">X轴位移</span>
           <!-- <span style="font-weight: bold">12.3mm/s</span> -->
-          <span style="font-weight: bold">{{ queryPredictPass2 }}mm/s</span>
+          <!-- <span style="font-weight: bold">{{ queryPredictPass2 }}mm/s</span> -->
         </div>
         <div>
           <span style="margin-right: 30px">Y轴位移</span
@@ -202,7 +202,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<!-- <script setup lang="ts">
 import { getqueryPredictPass2 } from "@/api/routes";
 import { ref } from "vue";
 import { array } from "vue-types";
@@ -221,12 +221,5 @@ const fetchqueryPredictPass2 = async () => {
 };
 fetchqueryPredictPass2();
 
-// import { getqueryAlert } from "@/api/routes";
-// const queryAlert = ref("");
-// const fetchqueryAlert = async () => {
-//   const res = await getqueryAlert();
-//   queryAlert.value = res.data.reduce((acc, item) => item.value, "");
-//   console.log(res, "res");
-// };
-// fetchqueryAlert();
-</script>
+
+</script> -->

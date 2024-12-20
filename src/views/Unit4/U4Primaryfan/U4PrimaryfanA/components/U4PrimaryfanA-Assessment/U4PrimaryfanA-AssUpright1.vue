@@ -11,7 +11,7 @@
       健康度评分
     </p>
     <img
-      name="U1YinfanBAss-Upleftright-bg"
+      name="U4PrimarydanAAss-Upleftright-bg"
       src="/src/assets/PrimaryFan/Assessment/beijing.png"
       alt=""
       class="w-full h-full object-cover rounded-lg"
@@ -34,7 +34,7 @@ export default {
     return {
       value: 0, // 初始数值
       apiUrl:
-        "http://localhost:8081/api/device/queryJiankangdu?measurements=1YBjkd"
+        "http://localhost:8081/api/device/queryJiankangdu?measurements=4YCAjkd"
     };
   },
   mounted() {

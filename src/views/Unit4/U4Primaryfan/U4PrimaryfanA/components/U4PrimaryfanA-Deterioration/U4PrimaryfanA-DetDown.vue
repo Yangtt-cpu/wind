@@ -107,12 +107,12 @@ export default {
       try {
         // 获取健康度数据
         const healthResponse = await axios.post(
-          "http://localhost:8081/api/device/queryJiankangdu2?measurements=1YBjkd"
+          "http://localhost:8081/api/device/queryJiankangdu2?measurements=4YCAjkd"
         );
 
         // 获取严重健康问题数据
         const severeHealthResponse = await axios.post(
-          "http://localhost:8081/api/device/queryJiankangdu2?measurements=1YBjkdpredict"
+          "http://localhost:8081/api/device/queryJiankangdu2?measurements=4YCAjkdpredict"
         );
 
         // 解析健康度数据

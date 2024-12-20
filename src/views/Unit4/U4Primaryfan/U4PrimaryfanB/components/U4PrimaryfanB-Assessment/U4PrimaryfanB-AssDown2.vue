@@ -28,7 +28,7 @@ export default {
       this.updateChart();
     },
     fetchData() {
-      fetch("http://localhost:8081/api/device/queryU1YFBxfftamp")
+      fetch("http://localhost:8081/api/device/queryU4YCBxfftamp")
         .then(response => {
           if (!response.ok) {
             throw new Error("回应不ok~");
