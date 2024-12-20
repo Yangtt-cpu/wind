@@ -202,7 +202,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<!-- <script setup lang="ts">
 import { getqueryPredictPass2 } from "@/api/routes";
 import { ref } from "vue";
 import { array } from "vue-types";
@@ -219,15 +219,6 @@ const fetchqueryPredictPass2 = async () => {
   }
   console.log(res, "res"); 
 };
-fetchqueryPredictPass2(); 
+fetchqueryPredictPass2();  -->
 
-
-// import { getqueryAlert } from "@/api/routes";
-// const queryAlert = ref("");
-// const fetchqueryAlert = async () => {
-//   const res = await getqueryAlert();
-//   queryAlert.value = res.data.reduce((acc, item) => item.value, "");
-//   console.log(res, "res");
-// };
-// fetchqueryAlert();
 </script>

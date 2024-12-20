@@ -15,7 +15,7 @@ export default {
     return {
       measurements: [], // 横坐标数据
       values: [], // 纵坐标数据
-      chart: null, // 用于存储ECharts实例
+      chart: null // 用于存储ECharts实例
     };
   },
   mounted() {

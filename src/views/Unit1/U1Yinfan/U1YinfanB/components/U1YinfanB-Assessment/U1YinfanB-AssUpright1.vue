@@ -5,6 +5,7 @@
   >
     <p
       class="absolute top-1 left-2 text-black"
+<<<<<<< HEAD
       style="font-weight: bold; font-size: 14"
     >
       <!-- 实时状态评价 -->
@@ -12,6 +13,15 @@
     </p>
     <img
       name="Up-left-bg"
+=======
+      style="font-weight: bold; font-size: 14px"
+    >
+      <!-- 实时状态评价 -->
+      健康度评分
+    </p>
+    <img
+      name="U1YinfanBAss-Upleftright-bg"
+>>>>>>> main
       src="/src/assets/PrimaryFan/Assessment/beijing.png"
       alt=""
       class="w-full h-full object-cover rounded-lg"
@@ -26,6 +36,7 @@
 
 <script>
 import * as echarts from "echarts";
+<<<<<<< HEAD
 
 export default {
   name: "jiankangdu",
@@ -35,6 +46,51 @@ export default {
   methods: {
     initChart() {
       let option = {
+=======
+import axios from "axios";
+
+export default {
+  name: "jiankangdu",
+  data() {
+    return {
+      value: 0, // 初始数值
+      apiUrl: "http://localhost:8081/api/device/queryJiankangdu?measurements=1YBjkd"
+    };
+  },
+  mounted() {
+    this.fetchData(); // 组件挂载时获取数据
+    this.initChart();
+  },
+  methods: {
+    // 从后端获取数据
+    fetchData() {
+      axios
+        .post(this.apiUrl)
+        .then((response) => {
+          const apiResponse = response.data;
+          if (apiResponse.state && apiResponse.data.length > 0) {
+            // 获取后端返回的第一个数值，并保留两位小数
+            this.value = parseFloat(apiResponse.data[0].value).toFixed(2);
+            this.updateChart(); // 更新图表
+          } else {
+            console.error("API返回数据为空或状态错误");
+          }
+        })
+        .catch((error) => {
+          console.error("获取后端数据失败:", error);
+        });
+    },
+
+    // 初始化图表
+    initChart() {
+      this.myChart = echarts.init(this.$refs.echartsContainer);
+      this.updateChart();
+    },
+
+    // 更新图表
+    updateChart() {
+      const option = {
+>>>>>>> main
         series: [
           {
             type: "gauge",
@@ -82,15 +138,23 @@ export default {
             },
             data: [
               {
+<<<<<<< HEAD
                 value: 89
+=======
+                value: this.value // 动态赋值，保留两位小数
+>>>>>>> main
               }
             ]
           }
         ]
       };
+<<<<<<< HEAD
 
       let myChart = echarts.init(this.$refs.echartsContainer);
       myChart.setOption(option);
+=======
+      this.myChart.setOption(option);
+>>>>>>> main
     }
   }
 };

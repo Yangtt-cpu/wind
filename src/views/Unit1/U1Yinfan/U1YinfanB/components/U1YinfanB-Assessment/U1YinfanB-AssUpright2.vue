@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <template>
   <!-- 频谱图容器 -->
   <div
@@ -8,6 +9,9 @@
 </template>
 
 <script>
+=======
+<!-- <script>
+>>>>>>> main
 import * as echarts from "echarts";
 
 export default {
